@@ -1,22 +1,17 @@
 import mongoose from "mongoose";
-// import val
 
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: [true, "Please enter your name"]
+    required: true
   },
-
   email: {
     type: String,
-    required: [true, "Please enter your email"]
+    required: true
   },
-
   password: {
     type: String,
-    required: [true, "Please Enter Your Password"],
-    minLength: [8, "Password should have atleast 8 chars"],
-    select: false,
+    required: true
   },
 
   createdAt: {
@@ -24,28 +19,16 @@ const userSchema = new mongoose.Schema({
     default: Date.now,
   },
 
-  gender: {
-    type: String,
-    required: [true, "Please Enter Gender"]
-  },
-
   role: {
     type: String,
     default: "user",
   },
 
-  avatar: {
-    public_id: {
-      type: String,
-    },
-    url: {
-      type: String,
-    }
-  },
-
-  resetPasswordToken: String,
-  resetPasswordExpire: Date,
+  // resetPasswordToken: String,
+  // resetPasswordExpire: Date,
 })
 
 
-module.exports = mongoose.model("User", userSchema)
+const user = mongoose.model("User", userSchema)
+
+export default user
