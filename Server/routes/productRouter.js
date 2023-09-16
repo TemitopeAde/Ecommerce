@@ -6,7 +6,7 @@ import upload from "../middlewares/multer.js";
 const productRouter = Router();
 
 
-productRouter.get(getAllProducts)
+productRouter.get("/", getAllProducts)
 productRouter.post("/", upload.array('images', 5), createProduct)
 productRouter.delete("/", deleteAllProducts)
 

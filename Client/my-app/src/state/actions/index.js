@@ -1,8 +1,9 @@
 import axios from 'axios';
-import { SIGNIN_FAILED, SIGNIN_SUCCESS, SIGNUP_FAILED, SIGNUP_SUCCESS } from './types';
+import { GET_SINGLE_PRODUCT, SIGNIN_FAILED, SIGNIN_SUCCESS, SIGNUP_FAILED, SIGNUP_SUCCESS } from './types';
 
 
 const baseUrlAuth = "http://localhost:5100/api/v1/users"
+const baseUrlProduct = "http://localhost:5100/api/v1/products"
 
 export const login = (data) => async (dispatch) => {
 
@@ -94,8 +95,34 @@ export const signUp = (data) => async (dispatch) => {
 
 }
 
-export const addProduct = (data) => async (dispatch) => {
-  console.log(data);
+export const getProduct = (data) => async (dispatch) => {
+  console.log(data, "data");
+  const url = `${baseUrlProduct}/${data}`
+  try {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+
+    const response = await axios.get(url, config);
+    if (response.status !== 200) {
+      throw new Error('Login failed'); // Throw an error for non-200 responses
+    }
+
+    dispatch({
+      type: GET_SINGLE_PRODUCT,
+      payload: response.data
+    })
+
+    return response.data
+  } catch (error) {
+    dispatch({
+      type: GET_SINGLE_PRODUCT,
+      payload: null
+    })
+    throw error
+  }
 }
 
 

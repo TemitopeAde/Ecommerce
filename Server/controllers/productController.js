@@ -33,51 +33,53 @@ export const createProduct = async (req, res) => {
   }
 }
 
-
-
-
 export const getAllProducts = async (req, res) => {
   try {
-    const { page = 1, limit, category, ratings } = req.query
-    const query = {}
+    const { page, limit, category, ratings } = req.query;
+    const query = {};
 
-    const lim = limit || 10
+    const lim = limit || 10;
+
     if (category) {
-      query.category = category
+      query.category = category;
     }
 
     if (ratings) {
-      query.ratings = Number(ratings)
+      query.ratings = Number(ratings);
     }
 
     console.log(query);
 
-
-
     // Count the total number of products
-    const totalCount = await Products.countDocuments(query)
+    const totalCount = await Products.countDocuments(query);
 
     // Calculate the number of pages
-    const totalPages = Math.ceil(totalCount / (lim || 10))
+    const totalPages = Math.ceil(totalCount / lim); // Use lim here, not limit
 
     const products = await Products.find(query)
-      .skip((page - 1) * limit)
-      .limit(lim)
+      .skip((page - 1) * lim)
+      .limit(lim);
 
-    if (!products) return res.status(500).json({ status: 'error', message: "No products found" });
-
-    res.status(200)
-      .json({
+    if (!products || products.length === 0) {
+      return res.status(200).json({
         products,
-        page: +page,
+        page: (page ? +page : 1),
         totalPages,
-        totalCount
-      })
+        totalCount,
+      });
+    }
+
+    res.status(200).json({
+      products,
+      page: (page ? +page : 1),
+      totalPages,
+      totalCount,
+    });
   } catch (error) {
+    console.error(error); // Log the error for debugging
     res.status(500).json({ status: 'error', message: 'Internal Server Error' });
   }
-}
-
+};
 export const deleteAllProducts = async (req, res) => {
   try {
     await Products.deleteMany({})
@@ -119,9 +121,9 @@ export const getProduct = async (req, res) => {
   try {
     const { productId } = req.params;
     const product = await Products.findById(productId)
-    if (!product) res.status(404).json({ status: 'error', message: 'Product not found.' });
+    if (!product) return res.status(404).json({ status: 'error', message: 'Product not found.' });
     res.status(200).json({ product })
   } catch (error) {
-    res.status(500).json({ status: 'error', message: 'Internal Server Error' });
+    res.status(500).json({ status: 'error', message: 'Bad request' });
   }
 }

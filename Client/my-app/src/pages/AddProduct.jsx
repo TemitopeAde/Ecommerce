@@ -67,11 +67,6 @@ const AddProduct = () => {
         formData.append(`images`, data.images[i]);
       }
 
-      for (let i = 0; i < data.images.length; i++) {
-        // console.log(`images[${i}]`);
-        console.log(data, "data");
-      }
-
       const response = await axios.post('http://localhost:5100/api/v1/products', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
