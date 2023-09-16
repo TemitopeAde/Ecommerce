@@ -33,16 +33,15 @@ const products = new mongoose.Schema({
     }
   },
 
-  logo: {
-    url: {
-      type: String,
-      required: false
-    }
-  },
-
   category: {
     type: String,
-    required: false,
+    enum: ['male', 'female'],
+    required: true,
+  },
+
+  sizes: {
+    type: String,
+    enum: ["S", "M", "L", "XL", "XXL"]
   },
 
   ratings: {

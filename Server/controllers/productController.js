@@ -1,21 +1,40 @@
 import Products from '../models/productModel.js'
-
+import { v2 as cloudinary } from 'cloudinary';
 
 export const createProduct = async (req, res) => {
   try {
-    const { name, price, description, images, category } = req.body
+    const { name, price, description, category, size } = req.body
+    // Upload images to Cloudinary
+    const imageUrls = [];
+    const { files } = req;
 
-    if (!name || !price || !description || !images) res.status(500).json({ msg: "Bad request" })
-
-    const products = await Products.create({ name, price, description, images, category })
-    if (!products) res.status(500).json({ err: "Products not added" })
+    if (files && files.length > 0) {
+      for (const file of files) {
+        const result = await cloudinary.uploader.upload(file.path);
+        console.log(result);
+        imageUrls.push(result.secure_url);
+      }
+    }
+    const products = await Products.create(
+      {
+        name,
+        price,
+        description,
+        category,
+        size,
+        images: imageUrls.map(url => ({ url }))
+      }
+    )
     res.status(201).json({
       products
     })
   } catch (error) {
-    res.status(500).json({ status: "error", msg: "Internal server error" })
+    res.status(500).json({ status: "error", msg: "Bad request" })
   }
 }
+
+
+
 
 export const getAllProducts = async (req, res) => {
   try {

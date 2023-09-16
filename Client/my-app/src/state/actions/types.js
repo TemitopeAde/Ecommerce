@@ -1,0 +1,14 @@
+export const SIGNUP_SUCCESS = "SIGNUP_SUCCESS";
+export const SIGNUP_FAILED = "SIGNUP_FAILED";
+
+
+export const ADD_PRODUCT = "ADD_PRODUCT";
+export const ADD_PRODUCT_FAILED = "ADD_PRODUCT_FAILED"
+
+export const SIGNIN_SUCCESS = "SIGNIN_SUCCESS";
+export const SIGNIN_FAILED = "SIGNIN_FAILED";
+
+export const LOGOUT = "LOGOUT";
+export const LOGOUT_FAILED = "LOGOUT_FAILED";
+
+export const RESET_STATUS = "RESET_STATUS";

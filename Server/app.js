@@ -22,10 +22,11 @@ app.use(bodyParser.urlencoded({ extended: true}))
 
 // NOT FOUND MIDDLEWARE
 // app.use('*', (req, res) => {
-//   res.status(404).json({ msg: 'not found' });
+//   res.status(404).json({ msg: 'not found' })
 // });
   
-app.use("/api/v1/products", auth, productRouter)
+app.use("/api/v1/products", productRouter) // add auth
+
 app.use("/api/v1/users", userRouter);
 
 cloudinary.config({
