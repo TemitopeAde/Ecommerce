@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Splide, SplideSlide } from '@splidejs/react-splide';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import { Link, useParams } from 'react-router-dom';
 // or other themes
@@ -12,7 +12,6 @@ import { useMutation } from 'react-query';
 
 const ProductDetail = () => {
   const { id } = useParams();
-  console.log(id);
   const [loading, setLoading] = useState();
   const [product, setProduct] = useState({})
   const dispatch = useDispatch(id);
@@ -20,9 +19,7 @@ const ProductDetail = () => {
     getProductMutation.mutate()
   }, [])
 
-  console.log(product.product?.images);
-
-
+ 
   const getProductMutation = useMutation((data) => dispatch(getProduct(id)), {
     onMutate: () => {
       setLoading(true)

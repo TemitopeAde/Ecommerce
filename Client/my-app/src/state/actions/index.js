@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { GET_SINGLE_PRODUCT, SIGNIN_FAILED, SIGNIN_SUCCESS, SIGNUP_FAILED, SIGNUP_SUCCESS } from './types';
+import { FETCH_ALL_PRODUCTS, FETCH_ALL_PRODUCTS_FAILED, GET_SINGLE_PRODUCT, SIGNIN_FAILED, SIGNIN_SUCCESS, SIGNUP_FAILED, SIGNUP_SUCCESS, UPDATE_CART, UPDATE_CART_PRODUCT } from './types';
 
 
 const baseUrlAuth = "http://localhost:5100/api/v1/users"
@@ -107,7 +107,7 @@ export const getProduct = (data) => async (dispatch) => {
 
     const response = await axios.get(url, config);
     if (response.status !== 200) {
-      throw new Error('Login failed'); // Throw an error for non-200 responses
+      throw new Error('Get product failed'); // Throw an error for non-200 responses
     }
 
     dispatch({
@@ -126,4 +126,47 @@ export const getProduct = (data) => async (dispatch) => {
 }
 
 
+export const getAllProducts = () => async (dispatch) => {
+  try {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
 
+    const response = await axios.get(baseUrlProduct, config);
+    if (response.status !== 200) {
+      throw new Error('Get all products failed'); // Throw an error for non-200 responses
+    }
+
+    dispatch({
+      type: FETCH_ALL_PRODUCTS,
+      payload: response.data
+    })
+
+    return response.data
+  } catch (error) {
+    dispatch({
+      type: FETCH_ALL_PRODUCTS_FAILED,
+      payload: null
+    })
+    throw error
+  }
+}
+
+
+export const getCartNumber = (data) => async (dispatch) => {
+  console.log(data);
+  dispatch({
+    type: UPDATE_CART,
+    payload: data
+  })
+}
+
+export const getCartProducts = (data) => async (dispatch) => {
+  console.log(data);
+  dispatch({
+    type: UPDATE_CART_PRODUCT,
+    payload: data
+  })
+}

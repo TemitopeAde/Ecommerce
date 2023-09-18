@@ -5,10 +5,10 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useMutation } from "react-query";
 
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { signUp } from "../state/actions";
-
+import Toast from "../constants/Toast";
 
 const Signup = () => {
   const dispatch = useDispatch();
@@ -60,18 +60,7 @@ const Signup = () => {
 
   return (
     <div>
-      <ToastContainer
-        position="top-center"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-      />
+      {/* <Toast /> */}
 
       <div className="login-box">
         <h2>Sign Up</h2>

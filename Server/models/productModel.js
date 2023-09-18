@@ -41,7 +41,7 @@ const products = new mongoose.Schema({
 
   sizes: {
     type: String,
-    enum: ["S", "M", "L", "XL", "XXL"]
+    enum: ["s", "m", "l", "xl", "xxl"]
   },
 
   ratings: {

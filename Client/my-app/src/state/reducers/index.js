@@ -21,13 +21,15 @@ const productPersistConfig = {
   storage: storage,
   whitelist: [
     "allProducts",
+    "cartItems",
+    "cartProducts"
   ]
 };
 
 
 const reducers = combineReducers({
   auth: persistReducer(authPersistConfig, authReducer),
-  memory: persistReducer(productPersistConfig, productReducer),
+  products: persistReducer(productPersistConfig, productReducer),
 });
 
 
