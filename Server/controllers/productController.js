@@ -127,3 +127,20 @@ export const getProduct = async (req, res) => {
     res.status(500).json({ status: 'error', message: 'Bad request' });
   }
 }
+
+
+export const searchProducts = async (req, res) => {
+  const {query} = req.query
+  try {
+    const products = await Products.find({
+      $or : [
+        { name: { $regex: query, $options: "i"}},
+        { category: { $regex: query, $options: "i"}}
+      ]
+    })
+    if (!products) res.status(404).json({ message: "Not found"})
+    res.status(200).json({ products })
+  } catch {
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+}

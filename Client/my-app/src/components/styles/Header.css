@@ -4,11 +4,16 @@
   padding: 10px 0;
 }
 
+.logo a {
+  text-decoration: none;
+  color: rgb(1, 17, 46);
+}
+
 .header-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  max-width: 1200px; /* Limit the width of the header */
+  max-width: 1200px; 
   margin: 0 auto;
   padding: 0 20px;
 }
