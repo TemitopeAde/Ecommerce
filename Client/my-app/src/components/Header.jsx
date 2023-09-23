@@ -6,7 +6,6 @@ import "./styles/Header.css"
 const Header = () => {
   const cartNumber = useSelector(state => state.products.cartProducts)
 
-  console.log(cartNumber);
   return (
     <header className="header">
       <div className="header-container">

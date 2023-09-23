@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { FETCH_ALL_PRODUCTS, FETCH_ALL_PRODUCTS_FAILED, GET_SINGLE_PRODUCT, SIGNIN_FAILED, SIGNIN_SUCCESS, SIGNUP_FAILED, SIGNUP_SUCCESS, UPDATE_CART, UPDATE_CART_PRODUCT } from './types';
+import { FETCH_ALL_PRODUCTS, FETCH_ALL_PRODUCTS_FAILED, GET_SINGLE_PRODUCT, SEARCH, SEARCH_FAILED, SIGNIN_FAILED, SIGNIN_SUCCESS, SIGNUP_FAILED, SIGNUP_SUCCESS, UPDATE_CART, UPDATE_CART_PRODUCT } from './types';
 
 
 const baseUrlAuth = "http://localhost:5100/api/v1/users"
@@ -55,8 +55,8 @@ export const signUp = (data) => async (dispatch) => {
 
   const body = JSON.stringify({
     email,
-    password, 
-    confirmPassword, 
+    password,
+    confirmPassword,
     name
   });
 
@@ -126,7 +126,7 @@ export const getProduct = (data) => async (dispatch) => {
 }
 
 
-export const getAllProducts = () => async (dispatch) => {
+export const getAllProducts = (data) => async (dispatch) => {
   try {
     const config = {
       headers: {
@@ -134,16 +134,16 @@ export const getAllProducts = () => async (dispatch) => {
       },
     };
 
-    const response = await axios.get(baseUrlProduct, config);
+    const response = await axios.get(`${baseUrlProduct}/?page=${data}`, config);
     if (response.status !== 200) {
-      throw new Error('Get all products failed'); // Throw an error for non-200 responses
+      throw new Error('Get all products failed'); // Thrw an error for non-200 responses
     }
 
     dispatch({
       type: FETCH_ALL_PRODUCTS,
       payload: response.data
     })
-
+    // console.log(response.data);
     return response.data
   } catch (error) {
     dispatch({
@@ -156,7 +156,7 @@ export const getAllProducts = () => async (dispatch) => {
 
 
 export const getCartNumber = (data) => async (dispatch) => {
-  console.log(data);
+  // console.log(data);
   dispatch({
     type: UPDATE_CART,
     payload: data
@@ -164,9 +164,40 @@ export const getCartNumber = (data) => async (dispatch) => {
 }
 
 export const getCartProducts = (data) => async (dispatch) => {
-  console.log(data);
+  // console.log(data);
   dispatch({
     type: UPDATE_CART_PRODUCT,
     payload: data
   })
+}
+
+export const searchProducts = (data) => async (dispatch) => {
+  // console.log(data);
+  // const {query} = data
+
+  try {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+
+    const response = await axios.get(`${baseUrlProduct}/search?query=${data}`, config);
+    if (response.status !== 200) {
+      throw new Error('Search products failed'); // Throw an error for non-200 responses
+    }
+
+    dispatch({
+      type: SEARCH,
+      payload: response.data
+    })
+
+    return response.data
+  } catch (error) {
+    dispatch({
+      type: SEARCH_FAILED,
+      payload: null
+    })
+    throw error
+  }
 }

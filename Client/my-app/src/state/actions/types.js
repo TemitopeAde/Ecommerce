@@ -21,3 +21,6 @@ export const RESET_STATUS = "RESET_STATUS";
 
 export const UPDATE_CART = "UPDATE_CART";
 export const UPDATE_CART_PRODUCT = "UPDATE_CART_PRODUCT";
+
+export const SEARCH = "SEARCH";
+export const SEARCH_FAILED = "SEARCH_FAILED";

@@ -10,6 +10,7 @@ import userRouter from './routes/user.js';
 import auth from './middlewares/auth.js';
 import cors from 'cors';
 
+
 const app = express();
 dotenv.config();
 
@@ -26,7 +27,6 @@ app.use(bodyParser.urlencoded({ extended: true}))
 // });
   
 app.use("/api/v1/products", productRouter) // add auth
-
 app.use("/api/v1/users", userRouter);
 
 cloudinary.config({
@@ -34,7 +34,6 @@ cloudinary.config({
   api_key: 628391574854572,
   api_secret: "XlB54R74QtmzOIfXafo9wlFUbbw"
 });
-
 
 const port = process.env.PORT || 5100;
 

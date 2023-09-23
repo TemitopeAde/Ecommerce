@@ -13,6 +13,8 @@ productRouter.get("/search", searchProducts)
 productRouter.delete("/:productId", deleteProduct)
 productRouter.get("/:productId",  getProduct)
 productRouter.patch("/:productId", updateProduct)
-  
+
+
+
 
 export default productRouter;

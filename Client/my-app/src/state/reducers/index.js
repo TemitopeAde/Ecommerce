@@ -22,7 +22,8 @@ const productPersistConfig = {
   whitelist: [
     "allProducts",
     "cartItems",
-    "cartProducts"
+    "cartProducts",
+    "fetchedProducts"
   ]
 };
 

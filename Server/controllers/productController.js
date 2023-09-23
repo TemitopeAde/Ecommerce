@@ -1,5 +1,7 @@
 import Products from '../models/productModel.js'
 import { v2 as cloudinary } from 'cloudinary';
+import axios from 'axios';
+
 
 export const createProduct = async (req, res) => {
   try {
@@ -34,6 +36,7 @@ export const createProduct = async (req, res) => {
 }
 
 export const getAllProducts = async (req, res) => {
+  console.log(req.query, "query");
   try {
     const { page, limit, category, ratings } = req.query;
     const query = {};
@@ -57,7 +60,7 @@ export const getAllProducts = async (req, res) => {
     const totalPages = Math.ceil(totalCount / lim); // Use lim here, not limit
 
     const products = await Products.find(query)
-      .skip((page - 1) * lim)
+      .skip((parseInt(page) - 1) * lim)
       .limit(lim);
 
     if (!products || products.length === 0) {
@@ -124,23 +127,25 @@ export const getProduct = async (req, res) => {
     if (!product) return res.status(404).json({ status: 'error', message: 'Product not found.' });
     res.status(200).json({ product })
   } catch (error) {
-    res.status(500).json({ status: 'error', message: 'Bad request' });
+    res.status(500).json({ status: 'error', message: 'Bad requests' });
   }
 }
 
 
 export const searchProducts = async (req, res) => {
-  const {query} = req.query
+  const { query } = req.query
   try {
     const products = await Products.find({
-      $or : [
-        { name: { $regex: query, $options: "i"}},
-        { category: { $regex: query, $options: "i"}}
+      $or: [
+        { name: { $regex: query, $options: "i" } },
+        { category: { $regex: query, $options: "i" } }
       ]
     })
-    if (!products) res.status(404).json({ message: "Not found"})
+    if (!products) res.status(404).json({ message: "Not found" })
     res.status(200).json({ products })
   } catch {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 }
+
+
