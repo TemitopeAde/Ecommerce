@@ -359,11 +359,12 @@ body .card .description p {
 body .card .description button {
   outline: 0;
   border: 0;
-  background: none;
-  border: 1px solid #d9d9d9;
+  border: 1px none;
+  background: #002c10;
+  outline: none;
   padding: 8px 0px;
   margin-bottom: 30px;
-  color: #515151;
+  color: whitesmoke;
   text-transform: uppercase;
   width: 125px;
   font-family: inherit;
@@ -372,9 +373,11 @@ body .card .description button {
   font-weight: 500;
 }
 body .card .description button:hover {
-  border: 1px solid #aedaa6;
-  color: #aedaa6;
+  border: 1px solid #093b00;
+  color: #000000;
   cursor: pointer;
+  background: white;
+  
 }
 
 /* SPLIDE.JS */

@@ -36,7 +36,6 @@ export const createProduct = async (req, res) => {
 }
 
 export const getAllProducts = async (req, res) => {
-  console.log(req.query, "query");
   try {
     const { page, limit, category, ratings } = req.query;
     const query = {};
@@ -133,19 +132,49 @@ export const getProduct = async (req, res) => {
 
 
 export const searchProducts = async (req, res) => {
-  const { query } = req.query
+  const { query, page, limit } = req.query;
+  const currentPage = parseInt(page) || 1;
+  const itemsPerPage = parseInt(limit) || 10;
+
   try {
-    const products = await Products.find({
+    const regexQuery = {
       $or: [
         { name: { $regex: query, $options: "i" } },
-        { category: { $regex: query, $options: "i" } }
-      ]
-    })
-    if (!products) res.status(404).json({ message: "Not found" })
-    res.status(200).json({ products })
-  } catch {
-    res.status(500).json({ error: 'Internal Server Error' });
+        { category: { $regex: `^${query}$`, $options: "i" } },
+      ],
+    };
+
+    // Count the total number of products that match the search criteria
+    const totalCount = await Products.countDocuments(regexQuery);
+
+    // Calculate the number of pages
+    const totalPages = Math.ceil(totalCount / itemsPerPage);
+
+    // Perform pagination with skip and limit
+    const products = await Products.find(regexQuery)
+      .skip((currentPage - 1) * itemsPerPage)
+      .limit(itemsPerPage);
+
+    if (!products || products.length === 0) {
+      return res.status(200).json({
+        products,
+        currentPage: 0,
+        totalPages: 0,
+        totalCount: 0,
+      });
+    }
+
+    res.status(200).json({
+      products,
+      currentPage,
+      totalPages,
+      totalCount,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
-}
+};
+
 
 

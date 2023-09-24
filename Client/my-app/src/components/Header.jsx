@@ -4,7 +4,9 @@ import { Link } from 'react-router-dom'; // Assuming you're using React Router
 import "./styles/Header.css"
 
 const Header = () => {
-  const cartNumber = useSelector(state => state.products.cartProducts)
+  const cartNumber = useSelector(state => state.products.shoppingCart)
+  
+  
 
   return (
     <header className="header">

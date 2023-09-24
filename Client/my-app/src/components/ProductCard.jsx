@@ -5,7 +5,7 @@ import '@splidejs/react-splide/css/skyblue';
 import '@splidejs/react-splide/css/sea-green';
 import { useMutation } from 'react-query';
 import { useDispatch, useSelector } from 'react-redux'
-import { getAllProducts, login, searchProducts } from '../state/actions/index';
+import { getAllProducts, login, modifyCartItemQuantity, searchProducts } from '../state/actions/index';
 import Loader from "../components/Loader";
 import { useForm } from "react-hook-form"
 import 'swiper/css';
@@ -14,7 +14,7 @@ import { toast } from 'react-toastify';
 import Toast from '../constants/Toast';
 import cartImage from '../images/cart.svg';
 import './styles/productcard.css';
-import { getCartNumber, getCartProducts } from '../state/actions/index.js'
+import { getCartNumber, getCartProducts, addToCart } from '../state/actions/index.js'
 
 
 
@@ -24,19 +24,22 @@ const ProductCard = () => {
   const products = useSelector((state) => state.products.fetchedProducts);
   const totalPages = useSelector((state) => state.products.totalPages);
   const currentPage = useSelector((state) => state.products.currentPageNumber);
+  const shoppingCart = useSelector((state) => state.products.shoppingCart);
   const [loading, setLoading] = useState();
   const [page, setPage] = useState(1);
   const [category, setCategory] = useState("male")
   const [cart, setCart] = useState([]);
   const [cartItems, setCartItems] = useState("");
   const [load, setLoad] = useState(false);
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm()
 
-  // console.log(products);
+  // console.log(useSelector((state) => state.products.shoppingCart));
+  console.log(shoppingCart);
 
   useEffect(() => {
     dispatch(getCartProducts(cart))
@@ -47,34 +50,28 @@ const ProductCard = () => {
     getAllProductsMutation.mutate();
   }, [page])
 
-  const addToCart = (product) => {
-    // Check if the product is already in the cart
-    const updatedCart = [...cart];
-    const existingItem = updatedCart.find((item) => item._id === product._id);
+  const addCart = (product) => {
+    const existingItem = shoppingCart.find((item) => item._id === product._id);
+    console.log(existingItem);
 
     if (existingItem) {
-      // If the item exists in the cart, increase its quantity by 1
-      existingItem.quantity += 1;
-      // Update the total price of the item
-      existingItem.totalPrice = existingItem.quantity * existingItem.price;
+      // If the item exists in the cart, modify its quantity
+      const newQuantity = existingItem.quantity + 1;
+      console.log(existingItem._id, newQuantity);
+      dispatch(modifyCartItemQuantity(existingItem._id, newQuantity));
 
       const updated = () => toast("Product updated");
       updated();
     } else {
       // If the item is not in the cart, add it with a quantity of 1
       const newItem = { ...product, quantity: 1, totalPrice: product.price };
-      updatedCart.push(newItem);
-      const added = () => toast("Product added to cart");
-      added();
+      dispatch(addToCart(newItem));
+
+      const updated = () => toast("Product added to cart");
+      updated();
     }
 
-    // Update the cart state
-    setCart(updatedCart);
-
-
-    // Calculate the cart item count and set it after updating the cart state
-    const itemCount = updatedCart.reduce((total, item) => total + item.quantity, 0);
-    setCartItems(itemCount);
+    // ... Rest of your addToCart logic
   };
 
   const getAllProductsMutation = useMutation((data) => dispatch(getAllProducts(page)), {
@@ -83,7 +80,7 @@ const ProductCard = () => {
     },
 
     onSuccess: (data) => {
-      console.log(data, "data")
+      // console.log(data, "data")
       setLoading(false)
     },
 
@@ -97,7 +94,7 @@ const ProductCard = () => {
     },
 
     onSuccess: (data) => {
-      
+
       // console.log(data, "search");
       // data here is the result of the login mutation (e.g., user data)
       setLoad(false); // Set loading state to false after a successful login
@@ -107,8 +104,8 @@ const ProductCard = () => {
     // Use onError callback to handle errors
     onError: () => {
       setLoad(false); // Set loading state to false after an error
-      const notify = () => toast("Product not found");
-      notify();
+      // const notify = () => toast("Product not found");
+      // notify();
     },
   })
 
@@ -120,15 +117,9 @@ const ProductCard = () => {
     setPage(newPage);
   };
 
-  const onSubmit = (data) => {
-    searchMutation.mutate(data)
-  }
-
   const onChange = (e) => {
     searchMutation.mutate(e.target.value)
   }
-
-  
 
   const pageNumbers = [];
   for (let i = Math.max(1, parseInt(currentPage) - 3); i <= Math.min(parseInt(totalPages), parseInt(currentPage) + 3); i++) {
@@ -136,12 +127,12 @@ const ProductCard = () => {
   }
 
 
- 
-
 
   switch (loading) {
     case true:
-      return <Loader />
+      return (
+        <Loader />
+      )
 
     case false:
       return (
@@ -149,7 +140,7 @@ const ProductCard = () => {
           <Toast />
           <div className="page-inner">
             <div className="search-product">
-              <form onSubmit={handleSubmit(onSubmit)}>
+              <form>
                 <input
                   type="text"
                   {...register("query", { required: true })}
@@ -158,12 +149,18 @@ const ProductCard = () => {
                   placeholder='Search products by name'
                 />
 
-        
+                <select className='form-control' onChange={onChange}>
+                  <option value="" disabled>Select a category</option>
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                </select>
+
               </form>
             </div>
             <div className="product-card-container">
+              {/* {console.log(products)} */}
               {(products.length !== 0 ? products && products.map((item) => (
-                <div key = {item._id}>
+                <div key={item._id}>
                   <div className="product-card">
                     <div className="product-image">
                       <Splide options={{
@@ -191,7 +188,7 @@ const ProductCard = () => {
                       </Link>
 
                       <div className="flex-between">
-                        <button onClick={() => addToCart(item)}>
+                        <button onClick={() => addCart(item)}>
                           <img src={cartImage} alt="" />
                         </button>
 
@@ -205,24 +202,24 @@ const ProductCard = () => {
               )) : <h3>No products found</h3>)}
             </div>
 
-            <div className="products-pagination">
-              {console.log(parseInt(currentPage), totalPages, "current page")}
+            {products.length !== 0 && <div className="products-pagination">
+
               <ul>
                 <li>
                   <button
                     onClick={() => handlePageChange(page - 1)}
                     disabled={parseInt(currentPage) === 1}
-                    className={ parseInt(currentPage) === 1 ? "disabled": ""}
+                    className={parseInt(currentPage) === 1 ? "disabled" : ""}
                   >
                     Previous
                   </button>
                 </li>
                 {
                   pageNumbers.map((item) => (
-                    
+
                     <li key={item}>
                       <button
-                        className={ parseInt(currentPage) === item ? "active": ""}
+                        className={parseInt(currentPage) === item ? "active" : ""}
                         onClick={() => handlePageChange(item)}
                       >
                         {item}
@@ -240,17 +237,16 @@ const ProductCard = () => {
                   </button>
                 </li>
               </ul>
-            </div>
+            </div>}
           </div>
         </div>
       )
-
 
     default:
       break;
   }
 
+};
 
-}
 
 export default ProductCard

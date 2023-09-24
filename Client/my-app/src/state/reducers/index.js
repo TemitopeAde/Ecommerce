@@ -23,7 +23,8 @@ const productPersistConfig = {
     "allProducts",
     "cartItems",
     "cartProducts",
-    "fetchedProducts"
+    "fetchedProducts",
+    "shoppingCart"
   ]
 };
 

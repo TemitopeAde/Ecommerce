@@ -1,5 +1,19 @@
 import axios from 'axios';
-import { FETCH_ALL_PRODUCTS, FETCH_ALL_PRODUCTS_FAILED, GET_SINGLE_PRODUCT, SEARCH, SEARCH_FAILED, SIGNIN_FAILED, SIGNIN_SUCCESS, SIGNUP_FAILED, SIGNUP_SUCCESS, UPDATE_CART, UPDATE_CART_PRODUCT } from './types';
+import { 
+  FETCH_ALL_PRODUCTS, 
+  FETCH_ALL_PRODUCTS_FAILED, 
+  GET_SINGLE_PRODUCT, SEARCH, 
+  SEARCH_FAILED, 
+  SIGNIN_FAILED, 
+  SIGNIN_SUCCESS, 
+  SIGNUP_FAILED, 
+  SIGNUP_SUCCESS, 
+  UPDATE_CART, 
+  UPDATE_CART_PRODUCT,
+  ADD_TO_CART,
+  REMOVE_FROM_CART,
+  MODIFY_CART_ITEM_QUANTITY
+} from './types';
 
 
 const baseUrlAuth = "http://localhost:5100/api/v1/users"
@@ -96,7 +110,7 @@ export const signUp = (data) => async (dispatch) => {
 }
 
 export const getProduct = (data) => async (dispatch) => {
-  console.log(data, "data");
+  // console.log(data, "data");
   const url = `${baseUrlProduct}/${data}`
   try {
     const config = {
@@ -172,9 +186,6 @@ export const getCartProducts = (data) => async (dispatch) => {
 }
 
 export const searchProducts = (data) => async (dispatch) => {
-  // console.log(data);
-  // const {query} = data
-
   try {
     const config = {
       headers: {
@@ -186,6 +197,8 @@ export const searchProducts = (data) => async (dispatch) => {
     if (response.status !== 200) {
       throw new Error('Search products failed'); // Throw an error for non-200 responses
     }
+
+    console.log(response.data);
 
     dispatch({
       type: SEARCH,
@@ -201,3 +214,33 @@ export const searchProducts = (data) => async (dispatch) => {
     throw error
   }
 }
+
+
+export const addToCart = (data) => async (dispatch) => {
+  console.log(data);
+  dispatch({
+    type: ADD_TO_CART,
+    payload: data
+  })
+}
+
+
+export const removeFromCart = (data) => async (dispatch) => {
+  dispatch({
+    type: REMOVE_FROM_CART,
+    payload: data
+  })
+}
+
+export const modifyCartItemQuantity = (productId, quantity) => async (dispatch) => {
+  console.log(productId, quantity);
+  dispatch({
+    type: MODIFY_CART_ITEM_QUANTITY,
+    payload: { productId, quantity }
+  })
+}
+
+// export const modifyCartItemQuantity = (productId, quantity) => ({
+//   type: 'MODIFY_CART_ITEM_QUANTITY',
+//   payload: { productId, quantity },
+// });

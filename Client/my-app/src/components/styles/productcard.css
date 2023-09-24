@@ -140,9 +140,13 @@
   border-color: #146c43;
 }
 
+.search-product select {
+  margin: 0
+}
+
 .search-product form {
   display: grid;
-  grid-template-columns: 400px 120px;
+  grid-template-columns: 2fr 1.3fr;
   gap: 2rem;
   grid-template-rows: 40px;
 }

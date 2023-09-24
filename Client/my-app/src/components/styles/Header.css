@@ -1,7 +1,7 @@
 .header {
   background-color: #fff; /* Header background color */
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Drop shadow for a subtle effect */
-  padding: 10px 0;
+  padding: 2px 0;
 }
 
 .logo a {
