@@ -5,6 +5,7 @@ import {
   FETCH_ALL_PRODUCTS,
   FETCH_ALL_PRODUCTS_FAILED,
   MODIFY_CART_ITEM_QUANTITY,
+  REMOVE_FROM_CART,
   SEARCH,
   UPDATE_CART,
   UPDATE_CART_PRODUCT
@@ -24,6 +25,18 @@ const initialState = {
 const productReducer = (state = initialState, action) => {
   // console.log(action.payload);
   const { type, payload } = action;
+
+  if (type === REMOVE_FROM_CART) {
+    const productIdToRemove = payload;
+
+    // Filter out the item with the matching product ID
+    const updatedCartItems = state.shoppingCart.filter((item) => item._id !== productIdToRemove);
+
+    return {
+      ...state,
+      shoppingCart: updatedCartItems,
+    };
+  }
 
   if (type === MODIFY_CART_ITEM_QUANTITY) {
     const { productId, quantity } = payload;

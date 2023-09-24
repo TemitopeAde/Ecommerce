@@ -226,6 +226,7 @@ export const addToCart = (data) => async (dispatch) => {
 
 
 export const removeFromCart = (data) => async (dispatch) => {
+  console.log(data);
   dispatch({
     type: REMOVE_FROM_CART,
     payload: data
@@ -240,7 +241,3 @@ export const modifyCartItemQuantity = (productId, quantity) => async (dispatch) 
   })
 }
 
-// export const modifyCartItemQuantity = (productId, quantity) => ({
-//   type: 'MODIFY_CART_ITEM_QUANTITY',
-//   payload: { productId, quantity },
-// });

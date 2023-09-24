@@ -1,7 +1,7 @@
 .header {
   background-color: #fff; /* Header background color */
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Drop shadow for a subtle effect */
-  padding: 2px 0;
+  padding: 1.3rem 0;
 }
 
 .logo a {
@@ -9,11 +9,15 @@
   color: rgb(1, 17, 46);
 }
 
+.header ul {
+  margin: 0 !important;
+}
+
 .header-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  max-width: 1200px; 
+  max-width: 1200px;
   margin: 0 auto;
   padding: 0 20px;
 }
@@ -26,6 +30,9 @@
 .nav {
   display: flex;
   align-items: center;
+}
+.nav-item img {
+  width: 30px;
 }
 
 .nav-list {
@@ -62,9 +69,23 @@
   text-decoration: none;
 }
 
-
-.nav-item.cart button{
+.nav-item.cart button {
   background: none;
   outline: none;
   border: none;
+}
+
+@media screen and (max-width: 768px) {
+  .header-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .search-product form {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 2rem;
+    grid-template-rows: 40px;
+  }
 }

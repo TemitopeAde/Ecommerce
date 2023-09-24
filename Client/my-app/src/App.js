@@ -4,6 +4,7 @@ import Signin from "./pages/Signin";
 import ProductList from "./pages/ProductList";
 import AddProduct from "./pages/AddProduct";
 import ProductDetail from "./pages/ProductDetail";
+import CartContainer from "./pages/CartContainer";
 
 
 export default function App() {
@@ -14,6 +15,7 @@ export default function App() {
       <Route path="sign-in" element={<Signin />} />
       <Route path="add-product" element={<AddProduct />} />
       <Route path="/product/:id" element={<ProductDetail />} />
+      <Route path="/cart" element={<CartContainer />} />
     </Routes>
   );
 }
