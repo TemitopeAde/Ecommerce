@@ -12,7 +12,9 @@ import {
   UPDATE_CART_PRODUCT,
   ADD_TO_CART,
   REMOVE_FROM_CART,
-  MODIFY_CART_ITEM_QUANTITY
+  MODIFY_CART_ITEM_QUANTITY,
+  GET_TOTAL_CART_NUMBER,
+  GET_TOTAL_CART_PRICE
 } from './types';
 
 
@@ -238,6 +240,22 @@ export const modifyCartItemQuantity = (productId, quantity) => async (dispatch) 
   dispatch({
     type: MODIFY_CART_ITEM_QUANTITY,
     payload: { productId, quantity }
+  })
+}
+
+
+export const getTotalCartNumber = () => async (dispatch) => {
+  dispatch({
+    type: GET_TOTAL_CART_NUMBER,
+    payload: null
+  })
+}
+
+
+export const getTotalCartPrice = () => async (dispatch) => {
+  dispatch({
+    type: GET_TOTAL_CART_PRICE,
+    payload: null
   })
 }
 

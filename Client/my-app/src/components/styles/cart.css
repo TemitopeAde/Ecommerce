@@ -41,6 +41,26 @@
   padding: 1.3em
 }
 
+.total-price {
+  margin-top: 2rem;
+}
+
+.cart-proceed {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 2.5rem;
+}
+
+.cart-proceed button {
+  color: white;
+  padding: 10px 20px;
+  background: rgb(25, 135, 0);
+  text-decoration: none;
+  border: none;
+  outline: none
+}
+
 .cart-grid .product-quantity button {
   border: none;
   outline: none;

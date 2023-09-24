@@ -4,6 +4,8 @@ import {
   ADD_TO_CART,
   FETCH_ALL_PRODUCTS,
   FETCH_ALL_PRODUCTS_FAILED,
+  GET_TOTAL_CART_NUMBER,
+  GET_TOTAL_CART_PRICE,
   MODIFY_CART_ITEM_QUANTITY,
   REMOVE_FROM_CART,
   SEARCH,
@@ -18,13 +20,33 @@ const initialState = {
   cartProducts: [],
   totalPages: "",
   currentPageNumber: "",
-  shoppingCart: []
+  shoppingCart: [],
+  totalNumberCart: "",
+  totalPrice : ""
 }
 
 
 const productReducer = (state = initialState, action) => {
-  // console.log(action.payload);
+  
   const { type, payload } = action;
+
+  if (type === GET_TOTAL_CART_NUMBER) {
+    const total = state.shoppingCart.reduce((total, item) => total + item.quantity, 0);
+    console.log(total, "total");
+    return {
+      ...state,
+      totalNumberCart: total
+    }
+  }
+
+  if (type === GET_TOTAL_CART_PRICE) {
+    const totalPrice = state.shoppingCart.reduce((total, item) => total + (item.price)*(item.quantity), 0);
+    console.log(totalPrice, "total price");
+    return {
+      ...state,
+      totalPrice
+    }
+  }
 
   if (type === REMOVE_FROM_CART) {
     const productIdToRemove = payload;
