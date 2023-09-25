@@ -1,7 +1,7 @@
 import Products from '../models/productModel.js'
 import { v2 as cloudinary } from 'cloudinary';
 import axios from 'axios';
-
+import got from 'got'
 
 export const createProduct = async (req, res) => {
   try {
@@ -130,7 +130,6 @@ export const getProduct = async (req, res) => {
   }
 }
 
-
 export const searchProducts = async (req, res) => {
   const { query, page, limit } = req.query;
   const currentPage = parseInt(page) || 1;
@@ -175,6 +174,42 @@ export const searchProducts = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
+export const createPaymentLink = async (req, res) => {
+  console.log(req.body);
+  const {name, phonenumber, email, price} = req.body
+  try {
+    const response = await got.post("https://api.flutterwave.com/v3/payments", {
+      headers: {
+        Authorization: `Bearer ${process.env.FLW_SECRET_KEY}`
+      },
+      json: {
+        tx_ref: Date.now() + Math.floor(Math.random() * 1000),
+        amount: price,
+        currency: "NGN",
+        redirect_url: "http://localhost:3000/payment-success",
+        meta: {
+          consumer_id: 11,
+          consumer_mac: "92a3-912ba-1192a"
+        },
+        customer: {
+          email: email,
+          phonenumber: phonenumber,
+          name: name
+        },
+        customizations: {
+          title: "Adesiyan Payments",
+          logo: "http://www.piedpiper.com/app/themes/joystick-v27/images/logo.png"
+        }
+      }
+    }).json();
+    res.status(200).json(response)
+  } catch (err) {
+    console.log(err.code);
+    console.log(err.response.body);
+    res.status(400).json({ err })
+  }
+}
 
 
 

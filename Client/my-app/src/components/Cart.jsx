@@ -112,8 +112,7 @@ const Cart = () => {
           <h4>{totalNumber}</h4>
         </section>
         <section className='continue-section'>
-          <button id="continue-shopping">Continue shopping</button>
-          <button>{`Proceed $${totalPrice}`}</button>
+          <button onClick={() => navigate("/checkout")}>{`Proceed $${totalPrice}`}</button>
         </section>
       </section>}
 

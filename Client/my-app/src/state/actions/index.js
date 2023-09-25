@@ -1,14 +1,14 @@
 import axios from 'axios';
-import { 
-  FETCH_ALL_PRODUCTS, 
-  FETCH_ALL_PRODUCTS_FAILED, 
-  GET_SINGLE_PRODUCT, SEARCH, 
-  SEARCH_FAILED, 
-  SIGNIN_FAILED, 
-  SIGNIN_SUCCESS, 
-  SIGNUP_FAILED, 
-  SIGNUP_SUCCESS, 
-  UPDATE_CART, 
+import {
+  FETCH_ALL_PRODUCTS,
+  FETCH_ALL_PRODUCTS_FAILED,
+  GET_SINGLE_PRODUCT, SEARCH,
+  SEARCH_FAILED,
+  SIGNIN_FAILED,
+  SIGNIN_SUCCESS,
+  SIGNUP_FAILED,
+  SIGNUP_SUCCESS,
+  UPDATE_CART,
   UPDATE_CART_PRODUCT,
   ADD_TO_CART,
   REMOVE_FROM_CART,
@@ -259,3 +259,49 @@ export const getTotalCartPrice = () => async (dispatch) => {
   })
 }
 
+
+export const getPaymentLink = (data) => async (dispatch) => {
+  // console.log(getState());
+  const { email, phonenumber, name, price } = data;
+  const url = `${baseUrlProduct}/payment-link`
+
+  const body = JSON.stringify({
+    email,
+    phonenumber,
+    name,
+    price
+  });
+
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+
+  try {
+    // Make the login request to your server
+    const response = await axios.post(url, body, config);
+
+    if (response.status !== 200) {
+      throw new Error('Login failed'); // Throw an error for non-200 responses
+    }
+
+    // Assuming your server returns user data upon successful login
+    dispatch({
+      type: SIGNUP_SUCCESS,
+      payload: response.data
+    })
+
+    const user = response.data;
+
+    // Return the user data
+    return user;
+  } catch (error) {
+    dispatch({
+      type: SIGNUP_FAILED,
+      payload: null
+    })
+    // Handle login error here
+    throw error; // Re-throw the error for React Query to catch
+  }
+}
