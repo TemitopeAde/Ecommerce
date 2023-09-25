@@ -41,6 +41,16 @@
   padding: 1.3em
 }
 
+.continue-section {
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem
+}
+
+#continue-shopping {
+  background: crimson;
+}
+
 .total-price {
   margin-top: 2rem;
 }

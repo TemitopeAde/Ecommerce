@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import './styles/cart.css'
+import {useNavigate} from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { addToCart, getTotalCartPrice, modifyCartItemQuantity, removeFromCart, getTotalCartNumber } from '../state/actions';
 import { toast } from 'react-toastify';
@@ -10,9 +11,10 @@ const Cart = () => {
   const totalNumber = useSelector((state) => state.products.totalNumberCart)
   const totalPrice = useSelector((state) => state.products.totalPrice)
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
 
-  console.log(totalPrice, "price");
+  // console.log(totalPrice, "price");
 
   useEffect(() => {
     dispatch(getTotalCartNumber());
@@ -101,7 +103,7 @@ const Cart = () => {
         }) : <h3>No cart items</h3>}
       </section>
 
-      <DeleteModal open={open} setOpen={setOpen} />
+      {/* <DeleteModal open={open} setOpen={setOpen} /> */}
 
 
       {shoppingCart.length !== 0 && <section className='cart-proceed'>
@@ -109,7 +111,8 @@ const Cart = () => {
           <h3>Total products</h3>
           <h4>{totalNumber}</h4>
         </section>
-        <section>
+        <section className='continue-section'>
+          <button id="continue-shopping">Continue shopping</button>
           <button>{`Proceed $${totalPrice}`}</button>
         </section>
       </section>}

@@ -5,6 +5,7 @@ import '@splidejs/react-splide/css/skyblue';
 import '@splidejs/react-splide/css/sea-green';
 import { useMutation } from 'react-query';
 import { useDispatch, useSelector } from 'react-redux'
+import debounce from 'lodash/debounce';
 import { getAllProducts, login, modifyCartItemQuantity, searchProducts } from '../state/actions/index';
 import Loader from "../components/Loader";
 import { useForm } from "react-hook-form"
@@ -38,8 +39,6 @@ const ProductCard = () => {
     formState: { errors },
   } = useForm()
 
-  // console.log(useSelector((state) => state.products.shoppingCart));
-  console.log(shoppingCart);
 
   useEffect(() => {
     dispatch(getCartProducts(cart))
@@ -117,8 +116,14 @@ const ProductCard = () => {
     setPage(newPage);
   };
 
+  const debouncedSearch = debounce((query) => {
+    // Call your searchProducts function with the query
+    searchMutation.mutate(query);
+  }, 3000); // 20,000 milliseconds (20 seconds)
+
   const onChange = (e) => {
-    searchMutation.mutate(e.target.value)
+    // searchMutation.mutate(e.target.value)
+    debouncedSearch(e.target.value);
   }
 
   const pageNumbers = [];
