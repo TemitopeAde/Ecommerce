@@ -7,6 +7,7 @@ import ProductDetail from "./pages/ProductDetail";
 import CartContainer from "./pages/CartContainer";
 import Checkout from "./pages/Checkout";
 import Success from "./pages/Success";
+import UpdateProduct from "./pages/EditProduct";
 
 
 export default function App() {
@@ -20,6 +21,7 @@ export default function App() {
       <Route path="/cart" element={<CartContainer />} />
       <Route path="/checkout" element={<Checkout />} />
       <Route path="/payment-success" element={<Success />} />
+      <Route path="/update-product/:id" element={<UpdateProduct />} />
     </Routes>
   );
 }

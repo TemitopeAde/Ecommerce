@@ -20,7 +20,7 @@ const ProductDetail = () => {
   const [product, setProduct] = useState({})
   const dispatch = useDispatch(id);
   const shoppingCart = useSelector((state) => state.products.shoppingCart);
-  console.log( shoppingCart)
+  
   useEffect(() => {
     getProductMutation.mutate()
   }, [])

@@ -23,6 +23,13 @@
 .product-info h4 {
   font-weight: 400;
 }
+.img-preview {
+  width: 50px;
+}
+.product-info h5,
+.product-info h6 {
+  text-transform: capitalize;
+}
 
 .product-card .card-flex {
   display: grid

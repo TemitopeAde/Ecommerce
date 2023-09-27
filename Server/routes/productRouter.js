@@ -16,7 +16,7 @@ productRouter.delete("/", deleteAllProducts)
 productRouter.get("/search", searchProducts)
 productRouter.delete("/:productId", deleteProduct)
 productRouter.get("/:productId",  getProduct)
-productRouter.patch("/:productId", updateProduct)
+productRouter.patch("/:productId", upload.array('images', 5), updateProduct)
 productRouter.post("/payment-link", createPaymentLink)
 
 

@@ -122,7 +122,6 @@ const ProductCard = () => {
   }, 3000); // 20,000 milliseconds (20 seconds)
 
   const onChange = (e) => {
-    // searchMutation.mutate(e.target.value)
     debouncedSearch(e.target.value);
   }
 
@@ -163,38 +162,45 @@ const ProductCard = () => {
               </form>
             </div>
             <div className="product-card-container">
-              {/* {console.log(products)} */}
+              {console.log(products)}
               {(products.length !== 0 ? products && products.map((item) => (
                 <div key={item._id}>
                   <div className="product-card">
                     <div className="product-image">
                       <Splide options={{
-                        autoplay: true,
+                        autoplay: false,
                         type: "loop",
                         lazyLoad: true,
                       }} aria-label="My Favorite Images">
 
+                        { item.images.map((pics) => {
+                          console.log(pics);
+                          return (
+                            <SplideSlide key={item._id}>
+                              <img src={pics.url} alt={item.name} />
+                            </SplideSlide>
+                          )
+                        })}
 
-                        return (
-                        <SplideSlide key={item._id}>
-
-                          <img src="https://images.pexels.com/photos/45202/brownie-dessert-cake-sweet-45202.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260" alt="" />
-
-                        </SplideSlide>
-                        )
+                       
 
                       </Splide>
                     </div>
 
                     <div className="product-info">
-                      <h4>{item.category}</h4>
+                      <div className='flex-between'>
+                        <h6>{item?.category}</h6>
+                        <h6>{item?.color}</h6>
+                        <h6>{item?.size}</h6>
+                      </div>
+                      
                       <Link to={`/product/${item._id}`}>
-                        <h3>Crisp Spanish tortilla Matzo brei</h3>
+                        <h5>{item?.name}</h5>
                       </Link>
 
                       <div className="flex-between">
                         <button onClick={() => addCart(item)}>
-                          <img src={cartImage} alt="" />
+                          <img src={cartImage} alt={item?.name} />
                         </button>
 
                         <h5>$100</h5>

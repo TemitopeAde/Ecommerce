@@ -36,13 +36,11 @@ const products = new mongoose.Schema({
   category: {
     type: String,
     enum: ['male', 'female', "unisex"],
-    required: true,
   },
 
-  sizes: {
+  size: {
     type: String,
     enum: ["s", "m", "l", "xl", "xxl"],
-    required: true
   },
 
   ratings: {
@@ -58,7 +56,6 @@ const products = new mongoose.Schema({
   color: {
     type: String,
     enum: ["red", "blue", "green", "yellow", "black", "white", "other"],
-    required: true,
   },
 
 

@@ -120,6 +120,7 @@ input {
 
 #add-product {
   width: 70%;
+  margin-top: 9rem;
 }
 select:focus {
   color: black;

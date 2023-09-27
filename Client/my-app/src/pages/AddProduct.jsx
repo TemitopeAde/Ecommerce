@@ -6,7 +6,7 @@ import { useMutation } from "react-query";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from "axios";
-import { addProduct } from "../state/actions"; // Assuming you have this action defined
+import { addProduct } from "../state/actions"; 
 
 const AddProduct = () => {
   const dispatch = useDispatch();
@@ -17,6 +17,7 @@ const AddProduct = () => {
     description: '',
     size: '',
     category: '',
+    color: "",
   });
 
   const handleInputChange = (event) => {
@@ -29,14 +30,30 @@ const AddProduct = () => {
 
   const sizes = [
     { value: '', text: '--Choose an option--' },
-    { value: 'small', text: 'Small' },
-    { value: 'large', text: 'Large' },
+    {value: "xs", text: "Extra small"},
+    { value: 's', text: 'Small' },
+    { value: 'm', text: 'Medium' },
+    {value: "l", text: "Large"},
+    {value: "xl", text: "Extra large"},
+    {value: "xxl", text: "Extra extra large"}
   ];
 
   const categories = [
     { value: "", text: "--Choose an option--" },
     { value: "female", text: "Female wears" },
-    { value: "male", text: "Male wears" }
+    { value: "male", text: "Male wears" },
+    {value: "unisex", text: "Male and female wears"}
+  ]
+  
+  const color = [
+    {value: "", text: "--Choose an option"},
+    {value: "red", text: "Red"},
+    {value: "blue", text: "Blue"},
+    {value: "green", text: "Green"},
+    { value: "yellow", text: "Yellow" },
+    { value: "black", text: "Black" },
+    { value: "white", text: "White" },
+    { value: "others", text: "Others" },
   ]
 
   const [images, setImages] = useState([]);
@@ -55,6 +72,7 @@ const AddProduct = () => {
   
 
   const uploadProduct = async (data) => {
+    console.log(data);
     try {
       const formData = new FormData();
       formData.append('name', data.name);
@@ -62,6 +80,7 @@ const AddProduct = () => {
       formData.append('description', data.description);
       formData.append('size', data.size);
       formData.append('category', data.category);
+      formData.append('color', data.color)
 
       for (let i = 0; i < data.images.length; i++) {
         formData.append(`images`, data.images[i]);
@@ -80,13 +99,14 @@ const AddProduct = () => {
         // dispatch(addProduct(response.data.product));
 
         // Clear the form and images after successful submission
-        setProduct({
-          name: '',
-          price: '',
-          description: '',
-          size: '',
-          category: '',
-        });
+        // setProduct({
+        //   name: '',
+        //   price: '',
+        //   description: '',
+        //   size: '',
+        //   category: '',
+        //   color: ""
+        // });
         setImages([]);
       } else {
         const fail = () => toast("Product was not uploaded");
@@ -119,6 +139,16 @@ const AddProduct = () => {
       category: value
     });
   };
+
+  const handleChangeColor = (event) => {
+    const { value } = event.target;
+    setProduct({
+      ...product,
+      color: value
+    });
+  };
+
+  
 
   return (
     <div>
@@ -181,6 +211,24 @@ const AddProduct = () => {
               }
             </select>
             {errors.category && <span>This field is required</span>}
+          </div>
+
+          <div className="user-box">
+            <select
+              className="form-control"
+              {...register("color", { required: true })}
+              value={product.color}
+              onChange={handleChangeColor}
+            >
+              {
+                color.map(option => (
+                  <option key={option.value} value={option.value}>
+                    {option.text}
+                  </option>
+                ))
+              }
+            </select>
+            {errors.color && <span>This field is required</span>}
           </div>
 
           <div className="user-box">
